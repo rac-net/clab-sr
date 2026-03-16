@@ -1,0 +1,130 @@
+---
+- hosts: nokia 
+  strategy: free
+  vars:
+    ansible_network_os: nokia.sros.md
+    ansible_user: "{{user}}"
+    ansible_password: "{{password}}"
+    ansible_network_import_modules: false 
+
+  connection: network_cli
+  gather_facts: No
+
+  collections:
+  - nokia.sros
+
+  tasks:
+  - name: SSH & SR
+    cli_config:
+      config: |
+        configure system name "{{inventory_hostname}}"
+        configure system security ssh preserve-key 
+        configure router 
+          autonomous-system "{{bgp.as}}"
+          mpls-labels  sr-labels
+            start 100000
+            end 100999
+          exit
+        exit
+
+  - name: Config Ports 
+    cli_config:
+      config: |
+        configure port {{item.name}}
+          connector breakout c1-10g
+          admin-state enable
+        exit
+    loop: "{{port}}"
+    
+  - name: Config Network Port
+    cli_config:
+      config: |
+        configure port {{item.name}}/1
+          ethernet
+            encap-type dot1q  
+            mtu {{mtu}} 
+          exit  
+          admin-state enable
+        exit
+    loop: "{{port}}"
+    when: not item.access  
+
+  - name: Config Access Port
+    cli_config:
+      config: |
+        configure port {{item.name}}/1
+          ethernet
+            mode access
+            encap-type dot1q
+          exit
+          admin-state enable
+        exit          
+    loop: "{{port}}"
+    when: item.access
+
+
+  - name: Configure sytem interface
+    cli_config:
+      config: |
+        config router interface system
+          ipv4 primary address {{sys.address}} prefix 32
+          admin-state enable
+        exit 
+
+  - name: Configure interfaces
+    cli_config:
+      config: |
+        configure  router interface {{item.name}} 
+          ipv4 primary address {{ item.address }} prefix {{item.prefix}}
+          port {{item.port}}:{{item.vlan}}
+          admin-state enable
+        exit
+    loop: "{{net}}" 
+
+  - name: Configure OSPF
+    cli_config:
+      config: |
+        configure router ospf
+          admin-state enable
+          advertise-router-capability area
+          loopfree-alternate remote-lfa
+          exit
+          loopfree-alternate ti-lfa
+          exit
+          segment-routing
+            admin-state enable
+            prefix-sid-range
+              start-label 100000
+              max-index 999
+            exit  
+          exit
+          area 0
+            interface system
+              node-sid index {{ospf.sid}} 
+            exit
+            interface {{item.name}}
+              interface-type point-to-point
+            exit  
+          exit
+        exit  
+    loop: "{{ospf.int}}"
+
+  - name: Configure BGP
+    cli_config:
+      config: |
+        configure router bgp
+          group ibgp
+            peer-as 65001
+            local-address {{bgp.local}} 
+            family 
+              evpn true
+              vpn-ipv4 true
+            exit  
+          exit
+          neighbor {{item.nei}}
+            group ibgp
+          exit
+        exit
+    loop: "{{bgp.nei}}"
+
+...

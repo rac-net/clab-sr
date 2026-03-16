@@ -1,0 +1,38 @@
+sys:
+  name: system
+  address: 10.6.6.6
+net:
+- name: XR4
+  port: 0/0/0/2
+  vlan: 0
+  address: 10.4.6.6
+  mask: 255.255.255.0
+  state: true
+- name: SR3
+  port: 0/0/0/3
+  vlan: 0
+  address: 10.3.6.6
+  mask: 255.255.255.0
+  state: true
+acs:
+- name: PE2
+  port: 0/0/0/0
+  vlan: 10
+  address: 10.2.22.1
+  prefix: 24
+  state: false
+ospf:
+  id: 10.6.6.6
+  sid: 6
+  int:
+  - name: 0/0/0/2
+  - name: 0/0/0/3
+bgp:
+  as: 65001
+  local: 10.6.6.6
+  nei:
+  - name: 10.1.1.1
+  - name: 10.2.2.2
+  - name: 10.3.3.3
+  - name: 10.4.4.4
+  - name: 10.5.5.5

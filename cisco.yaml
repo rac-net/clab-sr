@@ -1,0 +1,75 @@
+- hosts: cisco
+  strategy: free
+  vars:
+    ansible_network_os: cisco.iosxr.iosxr
+    ansible_user: "{{user}}"
+    ansible_password: "{{password}}"
+
+  connection: network_cli
+  gather_facts: No
+
+  collections:
+  - cisco.iosxr
+
+  tasks:
+  - name: SSH & SR
+    iosxr_config:
+      lines: |
+        segment-routing
+          global-block 100000 100999
+        lldp
+
+  - name: Configure Loopback
+    iosxr_config:
+      lines: |
+        interface loopback0
+          description {{sys.name}}
+          ipv4 address {{sys.address}}/32
+
+  - name: Configure interfaces
+    iosxr_config:
+      lines: |
+        interface GigabitEthernet {{item.port}}
+          description {{item.name}}
+          mtu {{mtu}}
+          ipv4 address {{ item.address }} {{ item.mask }}
+          lldp
+          enable
+          no shut
+    loop: "{{net}}"
+
+  - name: Configure OSPF
+    iosxr_config:
+      lines: |
+        router ospf IGP
+          router-id {{ospf.id}}
+          segment-routing mpls
+          segment-routing sr-prefer
+          area 0
+           fast-reroute per-prefix ti-lfa enable
+           fast-reroute per-prefix
+           segment-routing mpls
+           interface Loopback0
+            prefix-sid index {{ospf.sid}}
+           interface GigabitEthernet {{item.name}}
+            network point-to-point
+    loop: "{{ospf.int}}"
+
+  - name: Configure BGP
+    iosxr_config:
+      lines: |
+        router bgp {{bgp.as}}
+         bgp router-id {{bgp.local}}
+         address-family vpnv4 unicast
+         address-family l2vpn evpn
+         neighbor-group ibgp
+          remote-as {{bgp.as}}
+          update-source Loopback0
+          address-family vpnv4 unicast
+          address-family l2vpn evpn
+         neighbor {{item.name}}
+          use neighbor-group ibgp
+    loop: "{{bgp.nei}}"
+
+...
+

@@ -1,0 +1,53 @@
+sys:
+  name: system
+  address: 10.3.3.3
+port:
+- name: 1/1/c1
+  access: false
+- name: 1/1/c2
+  access: false
+- name: 1/1/c3
+  access: false
+- name: 1/1/c4
+  access: false
+net:
+- name: SR1
+  port: 1/1/c1/1
+  vlan: 0
+  address: 10.1.3.3
+  prefix: 24
+  state: true
+- name: SR2
+  port: 1/1/c2/1
+  vlan: 0
+  address: 10.2.3.3
+  prefix: 24
+  state: true
+- name: XR5
+  port: 1/1/c3/1
+  vlan: 0
+  address: 10.3.5.3
+  prefix: 24
+  state: true
+- name: XR6
+  port: 1/1/c4/1
+  vlan: 0
+  address: 10.3.6.3
+  prefix: 24
+  state: true
+ospf:
+  sid: 3
+  int:
+  - name: SR1
+  - name: SR2
+  - name: XR5
+  - name: XR6
+bgp:
+  as: 65001
+  local: 10.3.3.3
+  nei:
+  - nei: 10.1.1.1
+  - nei: 10.2.2.2
+  - nei: 10.4.4.4
+  - nei: 10.5.5.5  
+  - nei: 10.6.6.6

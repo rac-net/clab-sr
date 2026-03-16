@@ -1,0 +1,67 @@
+name: sr
+prefix: ""
+
+mgmt:
+  network: mgmt
+  bridge: mgmt
+  ipv4-subnet: 192.168.1.0/24
+  ipv4-range: 192.168.1.208/28
+    #ipv4-gw: 192.168.1.254
+
+topology:
+  kinds:
+    vr-sros:
+      image: vrnetlab/nokia_sros:24.10.R7 
+      license: /root/license.txt
+    cisco_xrd:
+       image: ios-xr/xrd-control-plane:25.2.2
+    cisco_csr1000v:
+       image: vrnetlab/cisco_csr1000v:17.03.04
+
+  nodes:
+    SR1:
+      mgmt-ipv4: 192.168.1.201       
+      kind: vr-sros            
+    SR2:
+      mgmt-ipv4: 192.168.1.202      
+      kind: vr-sros
+    SR3:
+      mgmt-ipv4: 192.168.1.203       
+      kind: vr-sros
+
+    XR4:
+      mgmt-ipv4: 192.168.1.204
+      kind: cisco_xrd
+    XR5:
+      mgmt-ipv4: 192.168.1.205
+      kind: cisco_xrd
+    XR6:
+      mgmt-ipv4: 192.168.1.206
+      kind: cisco_xrd
+
+    ios1:
+      kind: cisco_csr1000v
+      mgmt-ipv4: 192.168.1.211
+
+    ios2:
+      kind: cisco_csr1000v 
+      mgmt-ipv4: 192.168.1.212
+
+  links:
+    - endpoints: ["SR1:eth1","SR3:eth1"]
+    - endpoints: ["SR1:eth2","XR4:Gi0-0-0-1"]
+
+    - endpoints: ["SR2:eth1","XR4:Gi0-0-0-0"]
+    - endpoints: ["SR2:eth2","SR3:eth2"]
+
+    - endpoints: ["SR3:eth3","XR5:Gi0-0-0-2"]
+    - endpoints: ["SR3:eth4","XR6:Gi0-0-0-3"]
+
+    - endpoints: ["XR4:Gi0-0-0-3","XR5:Gi0-0-0-3"]
+    - endpoints: ["XR4:Gi0-0-0-2","XR6:Gi0-0-0-2"]
+
+    - endpoints: ["SR1:eth3","ios1:eth1"]	
+    - endpoints: ["SR2:eth3","ios1:eth2"]
+    - endpoints: ["XR5:Gi0-0-0-0","ios2:eth1"]
+    - endpoints: ["XR6:Gi0-0-0-0","ios2:eth2"]        
+       

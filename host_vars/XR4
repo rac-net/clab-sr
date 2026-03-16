@@ -1,0 +1,45 @@
+sys:
+  name: system
+  address: 10.4.4.4
+net:
+- name: SR2
+  port: 0/0/0/0
+  vlan: 0
+  address: 10.2.4.4
+  mask: 255.255.255.0
+  state: true
+- name: SR1
+  port: 0/0/0/1
+  vlan: 0
+  address: 10.1.4.4
+  mask: 255.255.255.0
+  state: true
+- name: XR6
+  port: 0/0/0/2
+  vlan: 0
+  address: 10.4.6.4
+  mask: 255.255.255.0
+  state: true
+- name: XR5
+  port: 0/0/0/3
+  vlan: 0
+  address: 10.4.5.4
+  mask: 255.255.255.0
+  state: true
+ospf:
+  id: 10.4.4.4
+  sid: 4
+  int:
+  - name: 0/0/0/0 
+  - name: 0/0/0/1
+  - name: 0/0/0/2
+  - name: 0/0/0/3
+bgp:
+  as: 65001
+  local: 10.4.4.4
+  nei:
+  - name: 10.1.1.1
+  - name: 10.2.2.2
+  - name: 10.3.3.3
+  - name: 10.5.5.5
+  - name: 10.6.6.6

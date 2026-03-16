@@ -1,11 +1,19 @@
-[nokia]
-SR1
-SR2
-SR3
-[cisco]
-XR4
-XR5
-XR6
-[ce]
-ios1
-ios2
+nokia:
+   SR1:
+      ansible_host: 192.168.1.201
+   SR2:
+      ansible_host: 192.168.1.202
+   SR3:
+      ansible_host: 192.168.1.203
+cisco:
+   XR4:
+      ansible_host: 192.168.1.204
+   XR5:
+      ansible_host: 192.168.1.205
+   XR6:
+      ansible_host: 192.168.1.206
+ce:
+   ios1:
+      ansible_host: 192.168.1.211
+   ios2:
+      ansible_host: 192.168.1.212

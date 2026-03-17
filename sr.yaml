@@ -1,12 +1,12 @@
 name: sr
 prefix: ""
 
-mgmt:
-  network: mgmt
-  bridge: mgmt
-  ipv4-subnet: 192.168.1.0/24
-  ipv4-range: 192.168.1.208/28
-    #ipv4-gw: 192.168.1.254
+#mgmt:
+#  network: mgmt
+#  bridge: mgmt
+#  ipv4-subnet: 192.168.1.0/24
+#  ipv4-range: 192.168.1.208/28
+#    #ipv4-gw: 192.168.1.254
 
 topology:
   kinds:
@@ -20,32 +20,32 @@ topology:
 
   nodes:
     SR1:
-      mgmt-ipv4: 192.168.1.201       
+#      mgmt-ipv4: 192.168.1.201       
       kind: vr-sros            
     SR2:
-      mgmt-ipv4: 192.168.1.202      
+#      mgmt-ipv4: 192.168.1.202      
       kind: vr-sros
     SR3:
-      mgmt-ipv4: 192.168.1.203       
+#      mgmt-ipv4: 192.168.1.203       
       kind: vr-sros
 
     XR4:
-      mgmt-ipv4: 192.168.1.204
+#      mgmt-ipv4: 192.168.1.204
       kind: cisco_xrd
     XR5:
-      mgmt-ipv4: 192.168.1.205
+#      mgmt-ipv4: 192.168.1.205
       kind: cisco_xrd
     XR6:
-      mgmt-ipv4: 192.168.1.206
+#      mgmt-ipv4: 192.168.1.206
       kind: cisco_xrd
 
     ios1:
       kind: cisco_csr1000v
-      mgmt-ipv4: 192.168.1.211
+#      mgmt-ipv4: 192.168.1.211
 
     ios2:
       kind: cisco_csr1000v 
-      mgmt-ipv4: 192.168.1.212
+#      mgmt-ipv4: 192.168.1.212
 
   links:
     - endpoints: ["SR1:eth1","SR3:eth1"]

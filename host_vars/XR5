@@ -3,20 +3,20 @@ sys:
   address: 10.5.5.5
 net:
 - name: SR3
-  port: 0/0/0/2
+  int: 0/0/0/2
   vlan: 0
   address: 10.3.5.5
   mask: 255.255.255.0
   state: true
 - name: XR4
-  port: 0/0/0/3
+  int: 0/0/0/3
   vlan: 0
   address: 10.4.5.5
   mask: 255.255.255.0
   state: true
 acs:
 - name: PE2
-  port: 0/0/0/0
+  int: 0/0/0/0
   vlan: 10
   address: 10.2.11.1
   prefix: 24

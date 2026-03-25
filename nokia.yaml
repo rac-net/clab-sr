@@ -34,7 +34,7 @@
           connector breakout c1-10g
           admin-state enable
         exit
-    loop: "{{port}}"
+    loop: "{{ports}}"
     
   - name: Config Network Port
     cli_config:
@@ -46,7 +46,7 @@
           exit  
           admin-state enable
         exit
-    loop: "{{port}}"
+    loop: "{{ports}}"
     when: not item.access  
 
   - name: Config Access Port
@@ -59,7 +59,7 @@
           exit
           admin-state enable
         exit          
-    loop: "{{port}}"
+    loop: "{{ports}}"
     when: item.access
 
 
@@ -76,7 +76,7 @@
       config: |
         configure  router interface {{item.name}} 
           ipv4 primary address {{ item.address }} prefix {{item.prefix}}
-          port {{item.port}}:{{item.vlan}}
+          port {{item.int}}:{{item.vlan}}
           admin-state enable
         exit
     loop: "{{net}}" 

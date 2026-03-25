@@ -29,7 +29,7 @@
   - name: Configure interfaces
     iosxr_config:
       lines: |
-        interface GigabitEthernet {{item.port}}
+        interface GigabitEthernet {{item.int}}
           description {{item.name}}
           mtu {{mtu}}
           ipv4 address {{ item.address }} {{ item.mask }}

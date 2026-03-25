@@ -1,7 +1,7 @@
 sys:
   name: system
   address: 10.2.2.2
-port:
+ports:
 - name: 1/1/c1
   access: false
 - name: 1/1/c2
@@ -10,20 +10,20 @@ port:
   access: true
 net:
 - name: XR4
-  port: 1/1/c1/1
+  int: 1/1/c1/1
   vlan: 0
   address: 10.2.4.2
   prefix: 24
   state: true
 - name: SR3
-  port: 1/1/c2/1
+  int: 1/1/c2/1
   vlan: 0
   address: 10.2.3.2
   prefix: 24
   state: true
 acs:
 - name: PE1
-  port: 1/1/c3/1
+  int: 1/1/c3/1
   vlan: 10
   address: 10.1.11.1
   prefix: 24

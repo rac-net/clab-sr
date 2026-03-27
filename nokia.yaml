@@ -1,11 +1,6 @@
 ---
 - hosts: nokia 
   strategy: free
-  vars:
-    ansible_network_os: nokia.sros.md
-    ansible_user: "{{user}}"
-    ansible_password: "{{password}}"
-    ansible_network_import_modules: false 
 
   connection: network_cli
   gather_facts: No

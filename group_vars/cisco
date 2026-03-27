@@ -1,3 +1,4 @@
-user: clab
-password: clab@123
+ansible_network_os: cisco.iosxr.iosxr
+ansible_user: clab
+ansible_password: clab@123
 mtu: 9000

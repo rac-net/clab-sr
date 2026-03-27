@@ -1,9 +1,5 @@
 - hosts: cisco
   strategy: free
-  vars:
-    ansible_network_os: cisco.iosxr.iosxr
-    ansible_user: "{{user}}"
-    ansible_password: "{{password}}"
 
   connection: network_cli
   gather_facts: No
